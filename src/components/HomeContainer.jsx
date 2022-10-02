@@ -1,6 +1,7 @@
 import React from 'react';
 import Delivery from './img/delivery.png';
 import HeroBg from './img/heroBg.png';
+import I1 from './img/i1.png';
 
 const HomeContainer = () => {
   return (
@@ -23,11 +24,20 @@ const HomeContainer = () => {
 
      <button type='button' className="bg-gradient-to-br from-orange-400 to-orange-500 w-full  md:w-auto px-4 py-2 rounded-lg hover:shadow-lg transition-all ease-in-out duration-100">Order Now</button>
     </div>
-    <div className="py-2 flex-1 flex items-center ">
-       <img src={HeroBg} className="ml-auto h-650" alt='herobg'/>
+    <div className="py-2 flex-1 flex items-center relative">
+       <img src={HeroBg} className=" ml-auto h-420 w-full lg:w-auto lg:h-510" alt='herobgs'/>
+
+       <div className="w-full h-full absolute flex top-0 left-0 items-center justify-center px-32 py-4">
+        <div className="w-190 p-4 bg-cardOverlay backdrop-blur-md rounded-2xl flex flex-col items-center justify-center  ">
+          <img src={I1} className="w-40 -mt-20"alt="I1"/>
+          <p className="text-xl font-semibold text-textColor">Icecream</p>
+          <p className="text-sm text-lighttextGrey font-semibold my-2">Chocolate & Vanilla </p>
+          <p className="text-sm font-semibold text-headingColor"><span className='text-xs text-red-600'>₹</span>215</p>
+        </div>
+       </div>
       </div>
   </section>
   )
 }
 
-export default HomeContainer
+export default HomeContainer;
