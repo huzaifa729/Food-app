@@ -6,6 +6,10 @@ import { categories } from '../utils/data';
 import Loader from './Loader';
 import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { storage } from '../firebase.config';
+import { saveItem } from '../utils/firebaseFunction';
+import { useStateValue } from '../context/StateProvider';
+import { getAllFoodItems } from "../utils/firebaseFunction";
+import { actionType } from "../context/reducer";
 
 const CreateContainer = () => {
 
@@ -18,6 +22,9 @@ const CreateContainer = () => {
   const [msg, setMsg] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [imageAsset, setImageAsset] = useState(null);
+
+  const [{foodItems}, dispatch] = useStateValue();
+ 
   
   const uploadImage = (e) => {
 
@@ -61,7 +68,7 @@ const CreateContainer = () => {
       setImageAsset(null);
       setIsLoading(false);
       setFields(true);
-      setMsg("Image deleted successfully 😈");
+      setMsg(" Image deleted successfully 😈 ");
       setAlertStatus('deleted');
       setTimeout(() => {
         setFields(false);
@@ -72,7 +79,74 @@ const CreateContainer = () => {
 
   const saveDetails = () => {
 
-  }
+    setIsLoading(true);
+    try{
+
+      if((!title || !calories || !imageAsset || !price || !categories)){
+        setFields(true);
+        setMsg(' Required fields cant be empty');
+        setAlertStatus('danger');
+        setTimeout(() => {
+          setFields(false)
+          setIsLoading(false)
+  
+        }, 4000);
+      }else{
+        const data = {
+          id : `${Date.now()}`,
+          title : title,
+          imageURL : imageAsset,
+          category : category,
+          calories : calories,
+          qty : 1,
+          price : price,
+        }
+        saveItem(data);
+        setIsLoading(false);
+        setFields(true);
+        setMsg(" Data uploaded successfully 😈 ");
+        clearData();
+        setAlertStatus('success');
+        setTimeout(() => {
+          setFields(false);
+          
+           }, 4000);
+      }
+
+    }catch (error) {
+      console.log(error);
+      setFields(true);
+      setMsg('Error while uploading : Try Again 😄');
+      setAlertStatus('danger');
+      setTimeout(() => {
+        setFields(false)
+        setIsLoading(false)
+
+      }, 4000);
+
+    };
+
+    fetchData();
+
+  };
+
+  const clearData = () => {
+    setTitle("");
+    setImageAsset(null);
+    setCalories("");
+    setPrice("");
+    setCalories("Select Category")
+  };
+
+  const fetchData = async () => {
+    await getAllFoodItems().then(data => {
+    //  console.log(data);
+    dispatch({
+      type : actionType.SET_FOOD_ITEMS,
+      foodItems : data,
+    })
+    })
+  };
 
 
   return (
