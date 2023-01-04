@@ -13,7 +13,7 @@ const firebaseConfig = {
   };
 
 
-const app = getApps.length > 0 ? getApp() : initializeApp(firebaseConfig);
+const app = getApps.Length > 0 ? getApp() : initializeApp(firebaseConfig);
 
 const firestore = getFirestore(app);
 
